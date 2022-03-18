@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class EnnemyPatrol : MonoBehaviour
+public class DollPatrol : MonoBehaviour
 {
     /// <summary>
     /// Vitesse de l'objet en patrouille
     /// </summary>
     [SerializeField]
-    private float _vitesse = 3f;
+    private float _vitesse = 5f;
     /// <summary>
     /// Liste de GO représentant les points à atteindre
     /// </summary>
@@ -32,6 +32,8 @@ public class EnnemyPatrol : MonoBehaviour
     /// </summary>
     private SpriteRenderer _sr;
 
+    private bool onFollow = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,14 +43,14 @@ public class EnnemyPatrol : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
+
         Vector3 direction = _cible.position - this.transform.position;
         this.transform.Translate(direction.normalized * _vitesse * Time.deltaTime, Space.World);
 
         if (direction.x < 0 && !_sr.flipX) _sr.flipX = true;
         else if (direction.x > 0 && _sr.flipX) _sr.flipX = false;
-
+        
         if (Vector3.Distance(this.transform.position, _cible.position) < _distanceSeuil)
         {
             _indexPoint = (++_indexPoint) % _points.Length;
@@ -56,6 +58,7 @@ public class EnnemyPatrol : MonoBehaviour
         }
     }
 
+ 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

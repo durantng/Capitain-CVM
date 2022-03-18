@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class EnnemyBehaviour : MonoBehaviour
+public class DollBehaviour : MonoBehaviour
 {
     /// <summary>
     /// Point de vie du personnage
@@ -41,48 +41,85 @@ public class EnnemyBehaviour : MonoBehaviour
     /// </summary>
     private bool _destructionEnCours = false;
 
+   
+
+
+    [SerializeField]
+    private Transform[] _points;
+
+
+    private bool valid = true;
+    private bool _onCollision = false;
+
     private void Start()
     {
         _animator = this.gameObject.GetComponent<Animator>();
+       
     }
 
     private void Update()
     {
         if (this._pv <= 0 && !this._destructionEnCours)
         {
+            
             _animator.SetTrigger("Destruction");
-            GameManager.Instance.PlayerData.IncrScore(this._pointDestruction);
+            //GameManager.Instance.PlayerData.IncrScore(this._pointDestruction);
             this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            this.gameObject.GetComponent<EnnemyPatrol>().enabled = false;
-            GameObject.Destroy(this.transform.parent.gameObject, 0.5f);
+            this.gameObject.GetComponent<DollPatrol>().enabled = false;
+            GameObject.Destroy(this.gameObject, 0.5f);
             this._destructionEnCours = true;
         }
 
         if (Time.fixedTime > _tempsDebutInvulnerabilite + DelaisInvulnerabilite)
+        {
             _invulnerable = false;
+            valid = true;
+        }
+            
+        _onCollision = false;
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("Player") && !_invulnerable)
+        
+       if(valid == true)
         {
-            PlayerBehaviour pb = collision.gameObject.GetComponent<PlayerBehaviour>();
-            if (pb != null)
-                pb.CallEnnemyCollision();
-        }
+            if (collision.gameObject.tag.Equals("Player"))
+            {
+
+                Debug.Log("onCollision");
+                PlayerBehaviour pb = collision.gameObject.GetComponent<PlayerBehaviour>();
+                if (pb != null)
+                    pb.CallEnnemyCollision();
+                valid = false;
+            }
+       }
+
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.Equals("Player"))
+
+
+        if (valid == true)
         {
-            if (!_invulnerable)
+            if (collision.gameObject.tag.Equals("Player"))
             {
-                this._pv--;
-                _animator.SetTrigger("DegatActif");
-                _tempsDebutInvulnerabilite = Time.fixedTime;
-                _invulnerable = true;
+                if (!_invulnerable)
+                {
+                    Debug.Log("onTrigger");
+                   
+                    this._pv--;
+                    _animator.SetTrigger("DegatActif");
+                    _tempsDebutInvulnerabilite = Time.fixedTime;
+                    _invulnerable = true;
+                    valid = false;
+                }
+                
             }
         }
+
     }
 }
