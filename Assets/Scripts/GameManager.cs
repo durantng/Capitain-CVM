@@ -80,23 +80,27 @@ public class GameManager : MonoBehaviour
 
     private void LoadPlayerData()
     {
-        string path = Path.Combine(Application.persistentDataPath, "savedata_encrypt.json");
-        if (File.Exists(path))
-        {
-            using (StreamReader stream = new StreamReader(path,
-            System.Text.Encoding.UTF8))
-            {
-                /*DataManipulator manipulator = new DataManipulator();*/
-                this._playerData = PlayerDataJson.ReadJson(/*manipulator.Decrypt(*/stream.ReadToEnd())/*)*/;
-            }
-            //DataManipulator manipulator = new DataManipulator();
-            //this._playerData = manipulator.Decrypt(path);
-        }
-        else
-        {
-            this._playerData = new PlayerData(4, 2);
-            SaveData();
-        }
+        // path = Path.Combine(Application.persistentDataPath, "savedata_encrypt.json");
+        // if (File.Exists(path))
+        //{
+        //using (StreamReader stream = new StreamReader(path,
+        //.Text.Encoding.UTF8))
+        //{
+        /*DataManipulator manipulator = new DataManipulator();*/
+        //this._playerData = PlayerDataJson.ReadJson(/*manipulator.Decrypt(*/stream.ReadToEnd())/*)*/;
+        //}
+        //DataManipulator manipulator = new DataManipulator();
+        //this._playerData = manipulator.Decrypt(path);
+        //
+        //else
+        //{
+        //._playerData = new PlayerData(4, 2);
+        // SaveData();
+
+
+
+        this._playerData = new PlayerData(4, 2);
+        SaveData();
     }
 
     private void Update()

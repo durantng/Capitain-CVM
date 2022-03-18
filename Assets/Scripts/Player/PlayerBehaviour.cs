@@ -46,6 +46,7 @@ public class PlayerBehaviour : MonoBehaviour
             this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
             GameObject.Destroy(this.gameObject);
             GameManager.Instance.PlayerData.DecrVie();
+            Debug.Log("contact");
         }
     }
 }
