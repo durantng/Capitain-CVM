@@ -38,6 +38,10 @@ public class PlayerData
     /// </summary>
     private int _energie;
     /// <summary>
+    /// Liste des trophés collectionnés dans le jeu
+    /// </summary>
+    private int _trophe;
+    /// <summary>
     /// Représente le score obtenu
     /// </summary>
     private int _score;
@@ -165,6 +169,15 @@ public class PlayerData
     public void IncrScore(int gain = 1)
     {
         this._score += gain;
+    }
+
+    /// <summary>
+    /// Augmente le nombre de trophés du joueur
+    /// </summary>
+    /// <param name="gain">Point gagné</param>
+    public void IncrTrophe(int gain = 1)
+    {
+        this._trophe += gain;
     }
 
     /// <summary>
