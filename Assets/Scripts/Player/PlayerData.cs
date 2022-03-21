@@ -40,11 +40,15 @@ public class PlayerData
     /// <summary>
     /// Liste des trophés collectionnés dans le jeu
     /// </summary>
-    private int _trophe;
+    private List<string> listTrophe;
     /// <summary>
     /// Représente le score obtenu
     /// </summary>
     private int _score;
+    /// <summary>
+    /// Représente le niveau maximal ateint
+    /// </summary>
+    private int levelMax;
     /// <summary>
     /// Liste des coffres ouverts dans le jeu
     /// </summary>
@@ -72,6 +76,9 @@ public class PlayerData
     public int Vie { get { return this._vie; } }
     public int Score { get { return this._score; } }
     public string[] ListeCoffreOuvert { get { return this._chestOpenList.ToArray(); } }
+    public List<string> getListTrophe { get { return this.listTrophe; } }
+    public int level { get { return this.levelMax; } }
+    public void setlevel(int level) { this.levelMax = level; }
 
     public PlayerData()
     {
@@ -85,12 +92,14 @@ public class PlayerData
         this.UIPerteVie = null;
         this.Gameover = null;
         this._chestOpenList = new List<string>();
+        this.listTrophe = new List<string>();
+        this.levelMax = 1;
     }
 
     public PlayerData(int vie = 1, int energie = 2, int score = 0,
         float volumeGeneral = 0, float volumeMusique = 0, float volumeEffet = 0,
         System.Action uiPerteEnergie = null, System.Action uiPerteVie = null,
-        System.Action gameOver = null, List<string> ChestList = null)
+        System.Action gameOver = null, List<string> ChestList = null, List<string> listeTrophe = null, int niveauMaximal=0)
     {
         this._vie = vie;
         this._energie = energie;
@@ -102,9 +111,15 @@ public class PlayerData
         this.UIPerteVie += uiPerteVie;
         this.Gameover += gameOver;
         this._chestOpenList = new List<string>();
+        this.listTrophe = new List<string>();
+        this.levelMax = niveauMaximal;
         if (ChestList != null)
             this._chestOpenList = ChestList;
+
+        if (listeTrophe != null)
+            this.listTrophe = listeTrophe;
     }
+
 
     /// <summary>
     /// Diminue l'énergie du personnage
@@ -172,12 +187,21 @@ public class PlayerData
     }
 
     /// <summary>
-    /// Augmente le nombre de trophés du joueur
+    ///  ajoute dans la liste des trophés du joueur
     /// </summary>
     /// <param name="gain">Point gagné</param>
-    public void IncrTrophe(int gain = 1)
+    public void ajouterTrophe(string nom)
     {
-        this._trophe += gain;
+        listTrophe.Add(nom);
+    }
+
+    /// <summary>
+    /// Verifie si le joueur a remporté le trophé designé
+    /// </summary>
+    /// <param name="gain">Point gagné</param>
+    public bool checkTrophe(string nom)
+    {
+        return listTrophe.Contains(nom);
     }
 
     /// <summary>
